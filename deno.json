@@ -1,0 +1,19 @@
+{
+  "name": "@kingsword09/dwpkg",
+  "version": "0.1.0",
+  "description": "Deno workspace packaging and publishing tool for JSR and NPM registries.",
+  "exports": {
+    "./cli": "./src/cli.ts"
+  },
+  "tasks": {
+    "build": "deno run -A build.ts"
+  },
+  "license": "MIT",
+  "imports": {
+    "@kingsword09/nodekit": "jsr:@kingsword09/nodekit@^0.0.7",
+    "commander": "npm:commander@^13.1.0",
+    "tsdown": "npm:tsdown@^0.11.0-beta.2",
+    "typescript": "npm:typescript@^5.8.3",
+    "unconfig": "npm:unconfig@^7.3.2"
+  }
+}
