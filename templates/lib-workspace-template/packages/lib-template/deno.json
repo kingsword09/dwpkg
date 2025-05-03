@@ -1,0 +1,16 @@
+{
+  "name": "@kingsword09/lib-template",
+  "version": "0.1.0",
+  "exports": "./mod.ts",
+  "tasks": {
+    "build": "deno run -A npm:dwpkg@latest",
+    "pub": "deno publish"
+  },
+  "license": "MIT",
+  "imports": {},
+  "publish": {
+    "include": [
+      "mod.ts"
+    ]
+  }
+}

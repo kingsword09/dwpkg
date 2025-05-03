@@ -1,0 +1,17 @@
+{
+  "name": "@kingsword09/lib-workspace-template",
+  "version": "0.1.0",
+  "exports": {},
+  "workspace": [
+    "packages/*"
+  ],
+  "tasks": {},
+  "license": "MIT",
+  "imports": {},
+  "publish": {
+    "include": [
+      "packages",
+      "mod.ts"
+    ]
+  }
+}

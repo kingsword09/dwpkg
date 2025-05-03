@@ -1,0 +1,19 @@
+{
+  "name": "@kingsword09/cli-config-template",
+  "version": "0.0.1",
+  "description": "CLI template",
+  "license": "MIT",
+  "exports": {
+    "./cli": "./src/cli.ts"
+  },
+  "tasks": {
+    "build": "deno run -A build.ts",
+    "pub": "deno publish"
+  },
+  "imports": {},
+  "publish": {
+    "include": [
+      "src/"
+    ]
+  }
+}

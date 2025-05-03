@@ -1,0 +1,16 @@
+{
+  "name": "@kingsword09/lib-config-template",
+  "version": "0.1.0",
+  "exports": "./mod.ts",
+  "tasks": {
+    "build": "deno run -A build.ts",
+    "pub": "deno publish"
+  },
+  "license": "MIT",
+  "imports": {},
+  "publish": {
+    "include": [
+      "mod.ts"
+    ]
+  }
+}
