@@ -43,14 +43,14 @@ interface PackageJson {
   packageManager?: string;
 }
 
-const packageJsonGet = async (denoJson: DenoJson, packageJsonExports: PackageJsonExports) => {
+const packageJsonGet = async (denoJson: DenoJson) => {
   const dependencies: Record<string, string> = {};
   Object.entries(denoJson.imports ?? {}).forEach((dep) => {
     const value = dep[1];
     if (value.startsWith("jsr:")) {
       dependencies[dep[0]] = `jsr:${value.split("@")[2]}`;
     } else if (value.startsWith("npm:")) {
-      dependencies[dep[0]] = `${value.split("@")[1]}`;
+      dependencies[dep[0]] = `${value.split("@")[dep[0].includes("@") ? 2 : 1]}`;
     }
   });
 
@@ -89,6 +89,10 @@ const copyPublicDir = async (outputDir: string) => {
   console.log(node_path.resolve(outputDir, "LICENSE"));
   await node_fs.cp(node_path.resolve(outputDir, "../LICENSE"), node_path.join(outputDir, "LICENSE"));
   await node_fs.cp(node_path.resolve(outputDir, "../README.md"), node_path.join(outputDir, "README.md"));
+  await node_fs.cp(node_path.resolve(outputDir, "../templates"), node_path.join(outputDir, "templates"), {
+    recursive: true,
+    force: true,
+  });
 };
 
 /**
@@ -107,7 +111,6 @@ export const npmBuild = async (cwd: string) => {
   const denoJson = await readJson.async<DenoJson>(node_path.join(normalizePath(cwd), "./deno.json"));
   const outputDir = node_path.join(normalizePath(cwd), "dist");
 
-  const packageJsonExports: PackageJsonExports = {};
   const entries: Record<string, string> = {};
   Object.entries(denoJson.exports).forEach((entry) => {
     let key = entry[0];
@@ -119,8 +122,7 @@ export const npmBuild = async (cwd: string) => {
     entries[key] = node_path.join(normalizePath(cwd), entry[1]);
   });
 
-  const { packageJson, workspacePath } = await packageJsonGet(denoJson, packageJsonExports);
-  console.log(Object.keys(denoJson.imports ?? {}));
+  const { packageJson } = await packageJsonGet(denoJson);
   await build({
     entry: entries,
     platform: "node",
@@ -128,7 +130,7 @@ export const npmBuild = async (cwd: string) => {
     dts: { compilerOptions: { isolatedDeclarations: true }, tsconfig: false },
     clean: true,
     skipNodeModulesBundle: true,
-    external: [...Object.keys(denoJson.imports ?? {}), "@kingsword09/nodekit/json"],
+    external: [...Object.keys(denoJson.imports ?? {}), /^@kingsword09\/nodekit\/.*/],
     hooks: {
       "build:before": (ctx) => {
         ctx.pkg = packageJson;
