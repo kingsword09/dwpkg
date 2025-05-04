@@ -8,4 +8,5 @@ try {
 } catch {
   // ignore
 }
-program.parse();
+
+program.run();

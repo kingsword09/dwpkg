@@ -71,7 +71,7 @@ const packageJsonGet = async (denoJson: DenoJson) => {
           description: denoJson.description,
           dependencies,
           ...filteredConfig,
-          bin: { [denoJson.name.split("/")[1]]: "./dist/cli.js" },
+          bin: { [denoJson.name.split("/")[1]]: "./dist/cli.mjs" },
           packageManager: "pnpm@10.10.0",
         } satisfies PackageJson;
       },
@@ -86,7 +86,6 @@ const packageJsonGen = async (packageJson: PackageJson, outputDir: string) => {
 };
 
 const copyPublicDir = async (outputDir: string) => {
-  console.log(node_path.resolve(outputDir, "LICENSE"));
   await node_fs.cp(node_path.resolve(outputDir, "../LICENSE"), node_path.join(outputDir, "LICENSE"));
   await node_fs.cp(node_path.resolve(outputDir, "../README.md"), node_path.join(outputDir, "README.md"));
   await node_fs.cp(node_path.resolve(outputDir, "../templates"), node_path.join(outputDir, "templates"), {
