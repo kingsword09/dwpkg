@@ -14,7 +14,7 @@
   "license": "MIT",
   "imports": {
     "@clack/prompts": "npm:@clack/prompts@^0.10.1",
-    "@kingsword09/nodekit": "jsr:@kingsword09/nodekit@^0.0.7",
+    "@kingsword/nodekit": "jsr:@kingsword/nodekit@^0.0.7",
     "pkg-types": "npm:pkg-types@^2.1.0",
     "tiny-bin": "npm:tiny-bin@^1.11.1",
     "tsdown": "npm:tsdown@^0.11.0-beta.3",

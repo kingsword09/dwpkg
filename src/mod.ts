@@ -1,4 +1,4 @@
-import { readJson } from "@kingsword09/nodekit/json";
+import { readJson } from "@kingsword/nodekit/json";
 import node_fs from "node:fs/promises";
 import node_path from "node:path";
 import { cwd } from "node:process";

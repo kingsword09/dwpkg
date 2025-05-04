@@ -1,4 +1,4 @@
-import { normalizePath } from "@kingsword09/nodekit/path";
+import { normalizePath } from "@kingsword/nodekit/path";
 import node_path from "node:path";
 import node_process from "node:process";
 

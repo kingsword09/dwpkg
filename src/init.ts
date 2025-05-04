@@ -1,6 +1,6 @@
 import { cancel, confirm, intro, isCancel, outro, spinner, text } from "@clack/prompts";
-import { readJson, writeJson } from "@kingsword09/nodekit/json";
-import { normalizePath } from "@kingsword09/nodekit/path";
+import { readJson, writeJson } from "@kingsword/nodekit/json";
+import { normalizePath } from "@kingsword/nodekit/path";
 import { cp } from "node:fs/promises";
 import node_path from "node:path";
 import { exit } from "node:process";
