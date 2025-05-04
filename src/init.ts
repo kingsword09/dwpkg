@@ -2,20 +2,21 @@ import { cancel, confirm, intro, isCancel, outro, spinner, text } from "@clack/p
 import { readJson, writeJson } from "@kingsword09/nodekit/json";
 import { normalizePath } from "@kingsword09/nodekit/path";
 import { cp } from "node:fs/promises";
-import path from "node:path";
-import { cwd, exit } from "node:process";
-import { pathParse } from "./utils/path.ts";
-
-interface InitOptions {
-  workspace: boolean;
-}
+import node_path from "node:path";
+import { exit } from "node:process";
+import { getRootPath } from "./utils/path.ts";
 
 /**
  * Initialize a new project with templates
  * @param options
  * @param _command
  */
-export const initCommandParse = async (options: InitOptions, _args: string[], _passthroughArgs: string[]) => {
+export const initCommandParse = async (
+  // deno-lint-ignore no-explicit-any
+  options: Record<string, any>,
+  _args: string[],
+  _passthroughArgs: string[],
+): Promise<void> => {
   intro(`Create Deno${options.workspace ? " Workspace " : " "}Library`);
   const name = await text({ message: "Where should we create your library?", placeholder: "./my-lib" });
 
@@ -24,7 +25,8 @@ export const initCommandParse = async (options: InitOptions, _args: string[], _p
     return exit(0);
   }
 
-  const { root, basename } = pathParse(name as string);
+  const root = getRootPath(name as string);
+  const basename = node_path.basename(root);
 
   const scope = await text({
     message: "JSR required a scope name.",
@@ -41,7 +43,7 @@ export const initCommandParse = async (options: InitOptions, _args: string[], _p
     initialValue: false,
   });
 
-  const denoJsonPath = path.join(root, "deno.json");
+  const denoJsonPath = node_path.join(root, "deno.json");
 
   const s = spinner();
   if (options.workspace) {
