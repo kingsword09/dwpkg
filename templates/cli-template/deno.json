@@ -2,6 +2,7 @@
   "name": "@kingsword09/cli-template",
   "version": "0.0.1",
   "description": "CLI template",
+  "lock": false,
   "license": "MIT",
   "exports": {
     "./cli": "./src/cli.ts"

@@ -3,7 +3,7 @@ import denoJson from "./deno.json" with { type: "json" };
 
 if (import.meta.main) {
   await build({
-    jsrRegistry: true,
+    jsrRegistry: false,
     copy: ["./templates"],
     platform: "node",
     format: "esm",

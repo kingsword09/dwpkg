@@ -1,6 +1,7 @@
 {
   "name": "@kingsword09/lib-config-template",
   "version": "0.1.0",
+  "description": "Lib template",
   "exports": "./mod.ts",
   "tasks": {
     "build": "deno run -A build.ts",
