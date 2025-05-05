@@ -14,18 +14,21 @@ import { createUserConfig, type IBuildOptions, type UserConfig } from "./utils/c
  *   config: "./deno.json",
  *   format: "esm",
  *   platform: "node",
+ *   jsrRegistry: true
  * });
  * ```
  *
  * @param input Build options or user configuration
  * @module
  */
+export async function build(input: IBuildOptions): Promise<void>;
+export async function build(input: UserConfig): Promise<void>;
 export async function build(input: IBuildOptions | UserConfig): Promise<void> {
-  if ("config" in input) {
+  if ("jsrRegistry" in input) {
     const config = await createUserConfig(input as IBuildOptions);
     await tsdownBuild(config);
   } else {
-    await tsdownBuild(input);
+    await tsdownBuild(input as UserConfig);
   }
 }
 

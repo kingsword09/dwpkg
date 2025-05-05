@@ -1,9 +1,9 @@
-import { build } from "jsr:@kingsword09/dwpkg";
+import { build } from "@kingsword09/dwpkg";
 import denoJson from "./deno.json" with { type: "json" };
 
 if (import.meta.main) {
   await build({
-    config: "./deno.json",
+    jsrRegistry: true,
     copy: ["./templates"],
     platform: "node",
     format: "esm",

@@ -14,8 +14,8 @@ export interface DenoJson {
   license?: string;
 }
 
-export const getConfig = async (configPath: string): Promise<{ root: string; denoJson: DenoJson; }> => {
-  if (configPath === "") {
+export const getConfig = async (configPath?: string): Promise<{ root: string; denoJson: DenoJson; }> => {
+  if (!configPath || configPath === "") {
     const { config, sources } = await loadConfig<DenoJson>({
       cwd: cwd(),
       sources: [{ files: "deno", extensions: ["json", "jsonc"] }],

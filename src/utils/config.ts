@@ -13,11 +13,14 @@ export type Platform = "node" | "browser";
  * Build options for dwpkg.
  */
 export interface IBuildOptions {
-  config: string;
-  copy: Options["copy"];
   format: Format;
   platform: Platform;
+  jsrRegistry: boolean;
+  minify?: boolean;
+  config?: string;
+  copy?: Options["copy"];
   external?: Options["external"];
+  noExternal?: Options["noExternal"];
   compilerOptions?: TsConfigJson.CompilerOptions;
   packageJson?: PackageJson;
 }
@@ -51,6 +54,7 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
   }, { entries: {}, flags: { hasBin: false, hasMain: false, hasExports: false } });
 
   const newPackageJson = generatePackageJson({
+    jsrRegistry: buildOptions.jsrRegistry,
     denoJson,
     packageJson: buildOptions.packageJson
       ? buildOptions.packageJson
@@ -64,13 +68,33 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
     flags,
     format: buildOptions.format,
   });
+  // const aliasEntries: { find: string; replacement: string; }[] = [];
+  // const alias: Record<string, string> = {};
+  // if (buildOptions.jsrRegistry) {
+  //   Object.entries(
+  //     Object.assign(
+  //       {},
+  //       newPackageJson.dependencies,
+  //       newPackageJson.devDependencies,
+  //       newPackageJson.peerDependencies,
+  //       newPackageJson.optionalDependencies,
+  //     ),
+  //   ).forEach(deps => {
+  //     if (deps[0].startsWith("@jsr")) {
+  //       alias["@" + deps[0].split("/")[1].replace("__", "/")] = deps[0];
+  //     }
+  //   });
+  // }
+  // console.log(alias);
 
   return {
     entry: entries,
     copy: buildOptions.copy ?? [],
+    minify: buildOptions.minify ?? false,
     platform: buildOptions.platform,
     format: buildOptions.format === "both" ? ["esm", "cjs"] : buildOptions.format,
     external: buildOptions.external ?? [],
+    noExternal: buildOptions.noExternal,
     dts: {
       compilerOptions: buildOptions.compilerOptions ? buildOptions.compilerOptions : { isolatedDeclarations: true },
       tsconfig: false,

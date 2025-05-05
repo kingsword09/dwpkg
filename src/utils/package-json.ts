@@ -10,7 +10,7 @@ import type { EntryFlags } from "./entry.ts";
  * @returns The generated package.json object.
  */
 export const generatePackageJson = (
-  options: { denoJson: DenoJson; packageJson: PackageJson; flags: EntryFlags; format: Format; },
+  options: { jsrRegistry: boolean; denoJson: DenoJson; packageJson: PackageJson; flags: EntryFlags; format: Format; },
 ): PackageJson => {
   const { denoJson, packageJson, flags, format } = options;
   const jsExtension = format === "esm" ? ".mjs" : ".js";
@@ -69,7 +69,12 @@ export const generatePackageJson = (
       const value = dep[1];
       if (value.startsWith("jsr:")) {
         hasJsr = true;
-        dependencies[dep[0]] = `jsr:${value.split("@")[2]}`;
+        if (options.jsrRegistry) {
+          const deps = value.split("@");
+          dependencies[`@jsr/${deps[1].replace("/", "__")}`] = deps[2];
+        } else {
+          dependencies[dep[0]] = `jsr:${value.split("@")[2]}`;
+        }
       } else if (value.startsWith("npm:")) {
         dependencies[dep[0]] = `${value.split("@")[dep[0].includes("@") ? 2 : 1]}`;
       }
@@ -77,7 +82,7 @@ export const generatePackageJson = (
 
     newPackageJson.dependencies = dependencies;
   }
-  if (hasJsr) {
+  if (hasJsr && options.jsrRegistry) {
     Object.assign(newPackageJson, { engines: { pnpm: ">=10.9.0", yarn: ">=4.9.0" } });
   }
 

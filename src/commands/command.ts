@@ -14,11 +14,17 @@ const program = bin("dwpkg", denoJson.description).package("dwpkg", denoJson.ver
   type: "string",
   enum: ["esm", "cjs", "both"],
   default: "both",
-}).option("--platform, -p", "", { type: "string", enum: ["node", "browser"], default: "node" }).action(
-  async (options, args, passThroughArgs) => {
-    await buildCommandParse(options, args, passThroughArgs);
-  },
-);
+}).option("--platform, -p", "Specify platform (node, browser).", {
+  type: "string",
+  enum: ["node", "browser"],
+  default: "node",
+}).option("--jsr", "Enable JSR registry.", { type: "boolean", default: false }).option(
+  "--minify",
+  "Enable code minification.",
+  { type: "boolean", default: false },
+).action(async (options, args, passThroughArgs) => {
+  await buildCommandParse(options, args, passThroughArgs);
+});
 
 program.command("init", "Initialize a new Deno library.").option("--workspace, -w", "create a workspace.", {
   default: false,
