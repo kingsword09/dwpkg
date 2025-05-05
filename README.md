@@ -11,8 +11,7 @@ Deno workspace packaging and publishing tool for JSR and NPM registries.
 ## Installation
 
 ```bash
-# Install via pip (if applicable)
-pnpm add --global dwpkg
+pnpm add --global jsr:@kingsword09/dwpkg
 ```
 
 ## License
