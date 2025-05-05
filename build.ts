@@ -15,7 +15,7 @@ if (import.meta.main) {
       "tsdown",
       "typescript",
       "unconfig",
-      /^@kingsword09\/nodekit\/.*/,
+      /^@kingsword\/nodekit\/.*/,
     ],
     packageJson: {
       name: "dwpkg",
