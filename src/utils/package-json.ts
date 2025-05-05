@@ -1,6 +1,6 @@
 import node_path from "node:path";
 import { type PackageJson, type PackageJsonExports, writePackageJSON } from "pkg-types";
-import type { Format } from "../config.ts";
+import type { Format } from "./config.ts";
 import type { DenoJson } from "./deno-json.ts";
 import type { EntryFlags } from "./entry.ts";
 

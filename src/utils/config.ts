@@ -1,12 +1,14 @@
 import type { TsConfigJson } from "get-tsconfig";
 import node_path from "node:path";
 import type { PackageJson } from "pkg-types";
-import type { Format, Platform, UserConfig } from "../config.ts";
+import type { UserConfig } from "../config.ts";
 import { copyPublicDir } from "./copy.ts";
 import { getConfig } from "./deno-json.ts";
 import type { EntryFlags } from "./entry.ts";
 import { createPackageJsonFiles, generatePackageJson } from "./package-json.ts";
 
+export type Format = "esm" | "cjs" | "both";
+export type Platform = "node" | "browser";
 export interface IBuildOptions {
   config: string;
   copy: string;
