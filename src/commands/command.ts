@@ -10,9 +10,15 @@ const program = bin("dwpkg", denoJson.description).package("dwpkg", denoJson.ver
 ).option("--copy", "Copies all files from the specified directory to the output directory.", {
   type: "string",
   default: "",
-}).action(async (options, args, passThroughArgs) => {
-  await buildCommandParse(options, args, passThroughArgs);
-});
+}).option("--format, -f", "Specify output format (esm, cjs, or both).", {
+  type: "string",
+  enum: ["esm", "cjs", "both"],
+  default: "both",
+}).option("--platform, -p", "", { type: "string", enum: ["node", "browser"], default: "node" }).action(
+  async (options, args, passThroughArgs) => {
+    await buildCommandParse(options, args, passThroughArgs);
+  },
+);
 
 program.command("init", "Initialize a new Deno library.").option("--workspace, -w", "create a workspace.", {
   default: false,

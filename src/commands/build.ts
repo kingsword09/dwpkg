@@ -1,4 +1,5 @@
-import { type IBuildOptions, npmBuild } from "../mod.ts";
+import { build } from "../mod.ts";
+import type { IBuildOptions } from "../utils/config.ts";
 
 export const buildCommandParse = async (
   // deno-lint-ignore no-explicit-any
@@ -6,5 +7,5 @@ export const buildCommandParse = async (
   _args: string[],
   _passThroughArgs: string[],
 ): Promise<void> => {
-  await npmBuild(options as IBuildOptions);
+  await build(options as IBuildOptions);
 };
