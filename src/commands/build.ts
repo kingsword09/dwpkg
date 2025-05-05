@@ -1,4 +1,4 @@
-import { type IBuildOptions, npmBuild } from "./mod.ts";
+import { type IBuildOptions, npmBuild } from "../mod.ts";
 
 export const buildCommandParse = async (
   // deno-lint-ignore no-explicit-any

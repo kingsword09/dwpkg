@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import module from "node:module";
-import { program } from "./command.ts";
+import { program } from "./commands/command.ts";
 
 try {
   module.enableCompileCache?.();

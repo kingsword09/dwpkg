@@ -4,7 +4,7 @@ import { normalizePath } from "@kingsword/nodekit/path";
 import { cp } from "node:fs/promises";
 import node_path from "node:path";
 import { exit } from "node:process";
-import { getRootPath } from "./utils/path.ts";
+import { getRootPath } from "../utils/path.ts";
 
 /**
  * Initialize a new project with templates
@@ -30,7 +30,7 @@ export const initCommandParse = async (
 
   const scope = await text({
     message: "JSR required a scope name.",
-    placeholder: "Enter your GitHub username or JSR scope (e.g. kingsword09)",
+    placeholder: "Enter your NPM organizations or JSR scope (e.g. kingsword09)",
   });
   if (isCancel(scope)) {
     cancel("Operation cancelled");

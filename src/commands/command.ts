@@ -1,5 +1,5 @@
 import bin from "tiny-bin";
-import denoJson from "../deno.json" with { type: "json" };
+import denoJson from "../../deno.json" with { type: "json" };
 import { buildCommandParse } from "./build.ts";
 import { initCommandParse } from "./init.ts";
 
