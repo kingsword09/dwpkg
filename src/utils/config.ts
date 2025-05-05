@@ -14,9 +14,10 @@ export type Platform = "node" | "browser";
  */
 export interface IBuildOptions {
   config: string;
-  copy: string;
+  copy: Options["copy"];
   format: Format;
   platform: Platform;
+  external?: Options["external"];
   compilerOptions?: TsConfigJson.CompilerOptions;
   packageJson?: PackageJson;
 }
@@ -66,9 +67,10 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
 
   return {
     entry: entries,
-    copy: buildOptions.copy ? [buildOptions.copy] : [],
+    copy: buildOptions.copy ?? [],
     platform: buildOptions.platform,
     format: buildOptions.format === "both" ? ["esm", "cjs"] : buildOptions.format,
+    external: buildOptions.external ?? [],
     dts: {
       compilerOptions: buildOptions.compilerOptions ? buildOptions.compilerOptions : { isolatedDeclarations: true },
       tsconfig: false,

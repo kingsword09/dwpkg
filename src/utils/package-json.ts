@@ -94,7 +94,7 @@ interface CreatePackageJsonOptions {
  * Create package.json files for the given output directory.
  * @param options The options for creating the package.json files.
  */
-export const createPackageJsonFiles = async (options: CreatePackageJsonOptions) => {
+export const createPackageJsonFiles = async (options: CreatePackageJsonOptions): Promise<void> => {
   const { outputDir, packageJson, format } = options;
   if (format === "esm") {
     packageJson.type = "module";
