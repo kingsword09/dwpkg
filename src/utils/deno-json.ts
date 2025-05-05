@@ -8,7 +8,7 @@ export interface DenoJson {
   name: string;
   version: string;
   description: string;
-  exports: Record<string, string>;
+  exports: string | Record<string, string>;
   imports?: Record<string, string>;
   patch?: string[];
   license?: string;

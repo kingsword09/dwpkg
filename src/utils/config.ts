@@ -36,7 +36,8 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
   const { root, denoJson } = await getConfig(buildOptions.config);
   const outputDir = node_path.join(root, "dist");
 
-  const { entries, flags } = Object.entries(denoJson.exports).reduce<
+  const denoJsonExports = typeof denoJson.exports === "string" ? { ".": denoJson.exports } : denoJson.exports;
+  const { entries, flags } = Object.entries(denoJsonExports).reduce<
     { entries: Record<string, string>; flags: EntryFlags; }
   >((acc, [key, value]) => {
     const entryKey = key === "." ? "mod" : key;

@@ -41,7 +41,8 @@ export const generatePackageJson = (
 
   if (flags.hasExports && !newPackageJson.exports) {
     const packageJsonExports: PackageJsonExports = {};
-    Object.entries(denoJson.exports).forEach((entry) => {
+    const denoJsonExports = typeof denoJson.exports === "string" ? { ".": denoJson.exports } : denoJson.exports;
+    Object.entries(denoJsonExports).forEach((entry) => {
       let key = entry[0];
 
       if (key === ".") {
