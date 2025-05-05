@@ -1,7 +1,6 @@
 import { build as tsdownBuild } from "tsdown";
 import "typescript";
-import type { UserConfig } from "./config.ts";
-import { createUserConfig, type IBuildOptions } from "./utils/config.ts";
+import { createUserConfig, type IBuildOptions, type UserConfig } from "./utils/config.ts";
 
 export async function build(input: IBuildOptions | UserConfig): Promise<void> {
   if ("config" in input) {

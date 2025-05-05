@@ -1,14 +1,17 @@
 import type { TsConfigJson } from "get-tsconfig";
 import node_path from "node:path";
-import type { PackageJson } from "pkg-types";
-import type { UserConfig } from "../config.ts";
+import type { Options } from "tsdown";
 import { copyPublicDir } from "./copy.ts";
 import { getConfig } from "./deno-json.ts";
 import type { EntryFlags } from "./entry.ts";
-import { createPackageJsonFiles, generatePackageJson } from "./package-json.ts";
+import { createPackageJsonFiles, generatePackageJson, type PackageJson } from "./package-json.ts";
 
 export type Format = "esm" | "cjs" | "both";
 export type Platform = "node" | "browser";
+
+/**
+ * Build options for dwpkg.
+ */
 export interface IBuildOptions {
   config: string;
   copy: string;
@@ -18,6 +21,13 @@ export interface IBuildOptions {
   packageJson?: PackageJson;
 }
 
+export type UserConfig = Options & { packageJson?: PackageJson; };
+
+/**
+ * Generate tsdown configuration based on build options
+ * @param buildOptions The build options for dwpkg.
+ * @returns The user configuration object.
+ */
 export const createUserConfig = async (buildOptions: IBuildOptions): Promise<UserConfig> => {
   const { root, denoJson } = await getConfig(buildOptions.config);
   const outputDir = node_path.join(root, "dist");

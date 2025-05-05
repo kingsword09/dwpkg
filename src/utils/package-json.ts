@@ -109,3 +109,5 @@ export const createPackageJsonFiles = async (options: CreatePackageJsonOptions) 
     await writePackageJSON(node_path.join(outputDir, "cjs/package.json"), { "type": "commonjs" });
   }
 };
+
+export type { PackageJson };
