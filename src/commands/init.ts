@@ -17,6 +17,10 @@ export const initCommandParse = async (
   _args: string[],
   _passthroughArgs: string[],
 ): Promise<void> => {
+  if (typeof Deno !== "undefined") {
+    outro("Currently, creating projects using 'deno run -A jsr:@kingsword09/dwpkg init' is not supported. Please install globally via 'pnpm add --global dwpkg' and then use 'dwpkg init' to initialize your project.");
+    return exit(0);
+  }
   intro(`Create Deno${options.workspace ? " Workspace " : " "}Library`);
   const name = await text({ message: "Where should we create your library?", placeholder: "./my-lib" });
 
@@ -38,7 +42,7 @@ export const initCommandParse = async (
   }
 
   const denoJsonPath = node_path.join(root, "deno.json");
-  const relativeTemplates = typeof Deno !== "undefined" ? "../../templates" : "./templates";
+  const relativeTemplates = "./templates";
 
   const s = spinner();
   if (options.workspace) {
