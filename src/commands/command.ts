@@ -2,6 +2,7 @@ import bin from "tiny-bin";
 import denoJson from "../../deno.json" with { type: "json" };
 import { buildCommandParse } from "./build.ts";
 import { initCommandParse } from "./init.ts";
+import { runCommandParse } from "./run.ts";
 
 const program = bin("dwpkg", denoJson.description).package("dwpkg", denoJson.version).option(
   "--config, -c",
@@ -23,7 +24,7 @@ const program = bin("dwpkg", denoJson.description).package("dwpkg", denoJson.ver
   "Enable code minification.",
   { type: "boolean", default: false },
 ).action(async (options, args, passThroughArgs) => {
-  await buildCommandParse(options, args, passThroughArgs);
+  await runCommandParse(options, args, passThroughArgs);
 });
 
 program.command("init", "Initialize a new Deno library.").option("--workspace, -w", "create a workspace.", {
@@ -31,5 +32,11 @@ program.command("init", "Initialize a new Deno library.").option("--workspace, -
 }).action(async (options, args, passthroughArgs) => {
   await initCommandParse(options, args, passthroughArgs);
 });
+
+program.command("build", "Create and execute a build.ts script similar to Rust's build.rs for pre-build tasks").action(
+  async (options, args, passThroughArgs) => {
+    await buildCommandParse(options, args, passThroughArgs);
+  },
+);
 
 export { program };

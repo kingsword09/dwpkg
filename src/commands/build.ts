@@ -1,11 +1,15 @@
-import { build } from "../mod.ts";
-import type { IBuildOptions } from "../utils/config.ts";
+import { which } from "@kingsword/nodekit/which";
+import { execSync } from "node:child_process";
+import { cwd } from "node:process";
 
 export const buildCommandParse = async (
   // deno-lint-ignore no-explicit-any
-  options: Record<string, any>,
+  _options: Record<string, any>,
   _args: string[],
   _passThroughArgs: string[],
-): Promise<void> => {
-  await build(options as IBuildOptions);
+) => {
+  execSync(`${await which.async("deno")} run -A ./build.ts`, {
+    cwd: cwd(),
+    stdio: "inherit",
+  });
 };
