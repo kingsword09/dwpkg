@@ -1,6 +1,9 @@
 import { build } from "../mod.ts";
 import type { IBuildOptions } from "../utils/config.ts";
 
+/**
+ * Run the cli
+ */
 export const runCommandParse = async (
   // deno-lint-ignore no-explicit-any
   options: Record<string, any>,

@@ -62,7 +62,7 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
       : {
         name: denoJson.name,
         version: denoJson.version,
-        description: denoJson.description,
+        description: denoJson.description ?? denoJson.name,
         author: denoJson.name.split("/")[0].replace("@", ""),
         license: denoJson.license ?? "MIT",
       },

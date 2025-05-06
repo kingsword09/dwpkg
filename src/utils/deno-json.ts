@@ -7,11 +7,14 @@ import { getAbsolutePath } from "./path.ts";
 export interface DenoJson {
   name: string;
   version: string;
-  description: string;
   exports: string | Record<string, string>;
+  description?: string;
   imports?: Record<string, string>;
   patch?: string[];
   license?: string;
+  workspaces?: string[] | {
+    members: string[];
+  };
 }
 
 export const getConfig = async (configPath?: string): Promise<{ root: string; denoJson: DenoJson; }> => {
