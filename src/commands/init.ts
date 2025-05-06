@@ -36,19 +36,15 @@ export const initCommandParse = async (
     cancel("Operation cancelled");
     return exit(0);
   }
-  const customBuild = await confirm({
-    message: "Do you want to customize the build configuration?",
-    inactive: "N",
-    active: "Y",
-    initialValue: false,
-  });
 
   const denoJsonPath = node_path.join(root, "deno.json");
+
+  const relativeTemplates = typeof Deno !== "undefined" ? "../templates" : "./templates";
 
   const s = spinner();
   if (options.workspace) {
     s.start("Creating deno workspace...");
-    await cp(normalizePath(import.meta.resolve("./templates/lib-workspace-template")), root, {
+    await cp(normalizePath(import.meta.resolve(`${relativeTemplates}/lib-workspace-template`)), root, {
       recursive: true,
       force: true,
     });
@@ -60,6 +56,13 @@ export const initCommandParse = async (
     );
     s.stop("created successfully!");
   } else {
+    const customBuild = await confirm({
+      message: "Do you want to customize the build configuration?",
+      inactive: "N",
+      active: "Y",
+      initialValue: false,
+    });
+
     const isCli = await confirm({
       message: "Is this a CLI tool project?",
       inactive: "N",
@@ -79,7 +82,10 @@ export const initCommandParse = async (
     }
 
     s.start("Creating deno library...");
-    await cp(normalizePath(import.meta.resolve(`./templates/${template}`)), root, { recursive: true, force: true });
+    await cp(normalizePath(import.meta.resolve(`${relativeTemplates}/${template}`)), root, {
+      recursive: true,
+      force: true,
+    });
 
     const content = JSON.stringify(await readJson.async(denoJsonPath), null, 2);
 
