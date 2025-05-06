@@ -1,6 +1,6 @@
 {
   "name": "@kingsword09/dwpkg",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Deno workspace packaging and publishing tool for JSR and NPM registries.",
   "lock": false,
   "exports": {
