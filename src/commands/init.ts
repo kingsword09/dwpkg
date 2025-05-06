@@ -38,8 +38,7 @@ export const initCommandParse = async (
   }
 
   const denoJsonPath = node_path.join(root, "deno.json");
-
-  const relativeTemplates = typeof Deno !== "undefined" ? "../templates" : "./templates";
+  const relativeTemplates = typeof Deno !== "undefined" ? "../../templates" : "./templates";
 
   const s = spinner();
   if (options.workspace) {

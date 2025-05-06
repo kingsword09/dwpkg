@@ -1,6 +1,6 @@
 {
   "name": "@kingsword09/dwpkg",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Deno workspace packaging and publishing tool for JSR and NPM registries.",
   "lock": false,
   "exports": {
@@ -9,6 +9,7 @@
     "./config": "./src/config.ts"
   },
   "tasks": {
+    "init": "deno run -A src/cli.ts init",
     "build": "deno run -A src/cli.ts --copy templates --format esm --platform node"
   },
   "license": "MIT",
