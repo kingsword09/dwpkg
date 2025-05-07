@@ -10,5 +10,5 @@ export const runCommandParse = async (
   _args: string[],
   _passThroughArgs: string[],
 ): Promise<void> => {
-  await build(options as IBuildOptions);
+  await build({ ...options, denoJsonPath: options.config, jsrRegistry: options.jsr } as IBuildOptions);
 };

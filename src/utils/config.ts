@@ -17,7 +17,7 @@ export interface IBuildOptions {
   platform: Platform;
   jsrRegistry: boolean;
   minify?: boolean;
-  config?: string;
+  denoJsonPath?: string;
   copy?: Options["copy"];
   external?: Options["external"];
   noExternal?: Options["noExternal"];
@@ -33,7 +33,7 @@ export type UserConfig = Options & { packageJson?: PackageJson; };
  * @returns The user configuration object.
  */
 export const createUserConfig = async (buildOptions: IBuildOptions): Promise<UserConfig> => {
-  const { root, denoJson } = await getConfig(buildOptions.config);
+  const { root, denoJson } = await getConfig(buildOptions.denoJsonPath);
   const outputDir = node_path.join(root, "dist");
 
   const denoJsonExports = typeof denoJson.exports === "string" ? { ".": denoJson.exports } : denoJson.exports;
