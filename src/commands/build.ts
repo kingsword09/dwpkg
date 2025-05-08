@@ -11,8 +11,5 @@ export const buildCommandParse = async (
   _args: string[],
   _passThroughArgs: string[],
 ) => {
-  execSync(`${await which.async("deno")} run -A ./build.ts`, {
-    cwd: cwd(),
-    stdio: "inherit",
-  });
+  execSync(`${await which.async("deno") ?? "deno"} run -A ./build.ts`, { cwd: cwd(), stdio: "inherit" });
 };

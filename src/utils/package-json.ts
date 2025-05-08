@@ -1,5 +1,6 @@
+import { transformRecordEntries } from "@kingsword/toolkit/record";
 import node_path from "node:path";
-import { type PackageJson, type PackageJsonExports, writePackageJSON } from "pkg-types";
+import { type PackageJson, writePackageJSON } from "pkg-types";
 import type { Format } from "./config.ts";
 import type { DenoJson } from "./deno-json.ts";
 import type { EntryFlags } from "./entry.ts";
@@ -40,11 +41,9 @@ export const generatePackageJson = (
   }
 
   if (flags.hasExports && !newPackageJson.exports) {
-    const packageJsonExports: PackageJsonExports = {};
     const denoJsonExports = typeof denoJson.exports === "string" ? { ".": denoJson.exports } : denoJson.exports;
-    Object.entries(denoJsonExports).forEach((entry) => {
-      let key = entry[0];
-
+    const packageJsonExports = transformRecordEntries(denoJsonExports, (entry) => {
+      let key = entry.key;
       if (key === ".") {
         key = "mod";
       } else if (key === "./cli") {
@@ -52,34 +51,30 @@ export const generatePackageJson = (
       }
       const modPath = `${key.replace("./", "")}`;
 
-      if (format === "both") {
-        packageJsonExports[entry[0]] = {
+      return format === "both"
+        ? {
           import: { types: `./esm/${modPath}.d.mts`, default: `./esm/${modPath}.mjs` },
           require: { types: `./cjs/${modPath}.d.ts`, default: `./cjs/${modPath}.js` },
-        };
-      } else {
-        packageJsonExports[entry[0]] = { default: `./${modPath}${jsExtension}`, types: `./${modPath}${dtsExtension}` };
-      }
+        }
+        : { default: `./${modPath}${jsExtension}`, types: `./${modPath}${dtsExtension}` };
     });
     newPackageJson.exports = packageJsonExports;
   }
   let hasJsr = false;
   if (!newPackageJson.dependencies) {
-    const dependencies: Record<string, string> = {};
-    Object.entries(denoJson.imports ?? {}).forEach((dep) => {
-      const value = dep[1];
+    const dependencies = transformRecordEntries(denoJson.imports ?? {}, ({ key, value }) => {
       if (value.startsWith("jsr:")) {
         hasJsr = true;
+
         if (options.jsrRegistry) {
-          const deps = value.split("@");
-          dependencies[`@jsr/${deps[1].replace("/", "__")}`] = deps[2];
+          return value.split("@")[2];
         } else {
-          dependencies[dep[0]] = `jsr:${value.split("@")[2]}`;
+          return `jsr:${value.split("@")[2]}`;
         }
       } else if (value.startsWith("npm:")) {
-        dependencies[dep[0]] = `${value.split("@")[dep[0].includes("@") ? 2 : 1]}`;
+        return `${value.split("@")[key.includes("@") ? 2 : 1]}`;
       }
-    });
+    }, ({ key, value }) => options.jsrRegistry ? `@jsr/${value.replace("/", "__")}` : key);
 
     newPackageJson.dependencies = dependencies;
   }

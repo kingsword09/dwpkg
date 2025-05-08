@@ -95,7 +95,7 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
     platform: buildOptions.platform,
     format: buildOptions.format === "both" ? ["esm", "cjs"] : buildOptions.format,
     external: buildOptions.external ?? [],
-    noExternal: buildOptions.noExternal,
+    noExternal: buildOptions.noExternal ?? [],
     dts: {
       compilerOptions: buildOptions.compilerOptions ? buildOptions.compilerOptions : { isolatedDeclarations: true },
       tsconfig: false,

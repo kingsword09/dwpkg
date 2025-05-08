@@ -12,9 +12,7 @@ export interface DenoJson {
   imports?: Record<string, string>;
   patch?: string[];
   license?: string;
-  workspaces?: string[] | {
-    members: string[];
-  };
+  workspaces?: string[] | { members: string[]; };
 }
 
 export const getConfig = async (configPath?: string): Promise<{ root: string; denoJson: DenoJson; }> => {
