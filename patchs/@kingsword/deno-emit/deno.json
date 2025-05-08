@@ -1,0 +1,15 @@
+{
+  "name": "@kingsword/deno-emit",
+  "version": "0.0.2",
+  "lock": false,
+  "exports": "./mod.ts",
+  "publish": {
+    "exclude": [
+      "!**"
+    ]
+  },
+  "imports": {
+    "@deno/cache-dir": "jsr:@deno/cache-dir@^0.13.2",
+    "@std/path": "jsr:@std/path@^1.0.9"
+  }
+}

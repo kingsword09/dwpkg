@@ -4,11 +4,11 @@ import denoJson from "./deno.json" with { type: "json" };
 if (import.meta.main) {
   await build({
     jsrRegistry: false,
+    jsrNoExternal: true,
     copy: ["./templates"],
     platform: "node",
     format: "esm",
     external: ["@clack/prompts", "get-tsconfig", "pkg-types", "tiny-bin", "tsdown", "typescript", "unconfig"],
-    noExternal: [/^@kingsword\/nodekit\/.*/],
     packageJson: {
       name: "dwpkg",
       version: denoJson.version,

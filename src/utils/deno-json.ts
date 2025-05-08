@@ -29,3 +29,29 @@ export const getConfig = async (configPath?: string): Promise<{ root: string; de
     return { root: node_path.dirname(denoJsonPath), denoJson };
   }
 };
+
+export interface PackageSpecifierParsed {
+  specifier: string;
+  name: string;
+  version?: string;
+  subpath?: string;
+}
+
+/**
+ * parse package specifier
+ * @param specifier
+ * @returns
+ */
+export const parsePackageSpecifier = (specifier: string): PackageSpecifierParsed | undefined => {
+  // 匹配协议
+  const protoMatch = specifier.match(/^(npm:|jsr:)/);
+  const proto = protoMatch ? protoMatch[1].replace(":", "") : "";
+  const noProto = specifier.replace(/^(npm:|jsr:)/, "");
+  // 匹配作用域包或普通包
+  const match = noProto.match(/^(@[^/]+\/[^@/]+|[^@/]+)(?:@([^/]+))?(\/.+)?$/);
+  if (!match) return undefined;
+  const name = match[1];
+  const version = match[2];
+  const subpath = match[3] ? match[3].replace(/^\//, "") : undefined;
+  return { specifier: proto, name, version, subpath };
+};
