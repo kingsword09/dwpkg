@@ -23,9 +23,11 @@ const program = bin("dwpkg", denoJson.description).package("dwpkg", denoJson.ver
   "--minify",
   "Enable code minification.",
   { type: "boolean", default: false },
-).option("--tsconfig", "Specify path to tsconfig.json file", { type: "string", default: "" }).action(async (options, args, passThroughArgs) => {
-  await runCommandParse(options, args, passThroughArgs);
-});
+).option("--tsconfig", "Specify path to tsconfig.json file", { type: "string", default: "" }).action(
+  async (options, args, passThroughArgs) => {
+    await runCommandParse(options, args, passThroughArgs);
+  },
+);
 
 program.command("init", "Initialize a new Deno library.").option("--workspace, -w", "create a workspace.", {
   default: false,

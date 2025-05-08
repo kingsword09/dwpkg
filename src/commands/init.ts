@@ -65,7 +65,7 @@ export const initCommandParse = async (
 
     s.stop("created successfully!");
   } else {
-    if(typeof Deno!== "undefined") {
+    if (typeof Deno !== "undefined") {
       execSync(`${await which.async("deno") ?? "deno"} init ${name} --lib`, { cwd: cwd() });
       s.message("modify deno.json");
       const content = await readJson.async<DenoJson>(denoJsonPath);
@@ -78,14 +78,14 @@ export const initCommandParse = async (
         active: "Y",
         initialValue: false,
       });
-  
+
       const isCli = await confirm({
         message: "Is this a CLI tool project?",
         inactive: "N",
         active: "Y",
         initialValue: false,
       });
-  
+
       let template = "";
       if (isCli && customBuild) {
         template = "cli-config-template";
@@ -96,15 +96,15 @@ export const initCommandParse = async (
       } else {
         template = "lib-template";
       }
-  
+
       s.start("Creating deno library...");
       await cp(normalizePath(import.meta.resolve(`${relativeTemplates}/${template}`)), root, {
         recursive: true,
         force: true,
       });
-  
+
       const content = JSON.stringify(await readJson.async(denoJsonPath), null, 2);
-  
+
       await writeJson.async(denoJsonPath, content.replace(`@kingsword09/${template}`, `@${scope}/${basename}`));
     }
 
