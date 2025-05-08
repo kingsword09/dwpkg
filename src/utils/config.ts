@@ -64,7 +64,7 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
     }
   }
 
-  const newPackageJson = generatePackageJson({
+  const newPackageJson = await generatePackageJson({
     root,
     jsrRegistry: buildOptions.jsrRegistry,
     denoJson,

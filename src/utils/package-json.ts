@@ -71,6 +71,7 @@ export const generatePackageJson = async (
         : { default: `./${modPath}${jsExtension}`, types: `./${modPath}${dtsExtension}` };
     });
     newPackageJson.exports = packageJsonExports;
+    newPackageJson.exports["./package.json"] = "./package.json";
   }
   let hasJsr = false;
   if (!newPackageJson.dependencies) {
