@@ -68,15 +68,14 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
     root,
     jsrRegistry: buildOptions.jsrRegistry,
     denoJson,
-    packageJson: packageJson
-      ? packageJson
-      : {
-        name: denoJson.name,
-        version: denoJson.version,
-        description: denoJson.description ?? denoJson.name,
-        author: denoJson.name.split("/")[0].replace("@", ""),
-        license: denoJson.license ?? "MIT",
-      },
+    packageJson: {
+      name: denoJson.name,
+      version: denoJson.version,
+      description: denoJson.description ?? denoJson.name,
+      author: denoJson.name.split("/")[0].replace("@", ""),
+      license: denoJson.license ?? "MIT",
+      ...(packageJson ?? {}),
+    },
     flags,
     format: buildOptions.format,
   });
