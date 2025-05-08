@@ -23,7 +23,7 @@ const program = bin("dwpkg", denoJson.description).package("dwpkg", denoJson.ver
   "--minify",
   "Enable code minification.",
   { type: "boolean", default: false },
-).action(async (options, args, passThroughArgs) => {
+).option("--tsconfig", "Specify path to tsconfig.json file", { type: "string", default: "" }).action(async (options, args, passThroughArgs) => {
   await runCommandParse(options, args, passThroughArgs);
 });
 

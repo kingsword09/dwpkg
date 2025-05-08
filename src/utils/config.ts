@@ -1,5 +1,6 @@
-import type { TsConfigJson } from "get-tsconfig";
+import { readJson } from "@kingsword/nodekit/json";
 import node_path from "node:path";
+import { readTSConfig } from "pkg-types";
 import type { Options } from "tsdown";
 import { copyPublicDir } from "./copy.ts";
 import { getConfig } from "./deno-json.ts";
@@ -21,8 +22,8 @@ export interface IBuildOptions {
   copy?: Options["copy"];
   external?: Options["external"];
   noExternal?: Options["noExternal"];
-  compilerOptions?: TsConfigJson.CompilerOptions;
-  packageJson?: PackageJson;
+  packageJson?: PackageJson | string;
+  tsconfig?: string;
 }
 
 export type UserConfig = Options & { packageJson?: PackageJson; };
@@ -54,11 +55,21 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
     return acc;
   }, { entries: {}, flags: { hasBin: false, hasMain: false, hasExports: false } });
 
+  let packageJson: PackageJson | undefined;
+  if (buildOptions.packageJson) {
+    if (typeof buildOptions.packageJson === "string") {
+      packageJson = await readJson.async(node_path.join(root, buildOptions.packageJson));
+    } else {
+      packageJson = buildOptions.packageJson;
+    }
+  }
+
   const newPackageJson = generatePackageJson({
+    root,
     jsrRegistry: buildOptions.jsrRegistry,
     denoJson,
-    packageJson: buildOptions.packageJson
-      ? buildOptions.packageJson
+    packageJson: packageJson
+      ? packageJson
       : {
         name: denoJson.name,
         version: denoJson.version,
@@ -69,24 +80,19 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
     flags,
     format: buildOptions.format,
   });
-  // const aliasEntries: { find: string; replacement: string; }[] = [];
-  // const alias: Record<string, string> = {};
-  // if (buildOptions.jsrRegistry) {
-  //   Object.entries(
-  //     Object.assign(
-  //       {},
-  //       newPackageJson.dependencies,
-  //       newPackageJson.devDependencies,
-  //       newPackageJson.peerDependencies,
-  //       newPackageJson.optionalDependencies,
-  //     ),
-  //   ).forEach(deps => {
-  //     if (deps[0].startsWith("@jsr")) {
-  //       alias["@" + deps[0].split("/")[1].replace("__", "/")] = deps[0];
-  //     }
-  //   });
-  // }
-  // console.log(alias);
+
+  const tsconfigPath = buildOptions.tsconfig ? node_path.resolve(root, buildOptions.tsconfig) : false;
+  let dtsConfig: Options["dts"];
+  if (tsconfigPath) {
+    const tsconfig = await readTSConfig(tsconfigPath);
+    dtsConfig = {
+      compilerOptions: tsconfig.compilerOptions,
+      tsconfig: tsconfigPath,
+      isolatedDeclarations: tsconfig.compilerOptions?.isolatedDeclarations ?? false,
+    };
+  } else {
+    dtsConfig = { isolatedDeclarations: true, tsconfig: false };
+  }
 
   return {
     entry: entries,
@@ -96,12 +102,10 @@ export const createUserConfig = async (buildOptions: IBuildOptions): Promise<Use
     format: buildOptions.format === "both" ? ["esm", "cjs"] : buildOptions.format,
     external: buildOptions.external ?? [],
     noExternal: buildOptions.noExternal ?? [],
-    dts: {
-      compilerOptions: buildOptions.compilerOptions ? buildOptions.compilerOptions : { isolatedDeclarations: true },
-      tsconfig: false,
-    },
+    dts: dtsConfig,
     clean: true,
     skipNodeModulesBundle: true,
+    tsconfig: tsconfigPath,
     outputOptions: (options, format) => {
       if (buildOptions.format === "both") {
         if (format === "es") {

@@ -1,3 +1,4 @@
+import { readJson } from "@kingsword/nodekit/json";
 import { transformRecordEntries } from "@kingsword/toolkit/record";
 import node_path from "node:path";
 import { type PackageJson, writePackageJSON } from "pkg-types";
@@ -10,14 +11,25 @@ import type { EntryFlags } from "./entry.ts";
  * @param options The options for generating the package.json object.
  * @returns The generated package.json object.
  */
-export const generatePackageJson = (
-  options: { jsrRegistry: boolean; denoJson: DenoJson; packageJson: PackageJson; flags: EntryFlags; format: Format; },
-): PackageJson => {
-  const { denoJson, packageJson, flags, format } = options;
+export const generatePackageJson = async (
+  options: {
+    root: string;
+    jsrRegistry: boolean;
+    denoJson: DenoJson;
+    packageJson: PackageJson;
+    flags: EntryFlags;
+    format: Format;
+  },
+): Promise<PackageJson> => {
+  let { root, denoJson, packageJson, flags, format } = options;
   const jsExtension = format === "esm" ? ".mjs" : ".js";
   const dtsExtension = format === "esm" ? ".d.mts" : ".d.ts";
 
   const binPath = format === "both" ? "./esm/cli.mjs" : `./cli${jsExtension}`;
+
+  if (packageJson && typeof packageJson === "string") {
+    packageJson = await readJson.async(node_path.join(root, packageJson));
+  }
 
   const newPackageJson = {
     ...packageJson,

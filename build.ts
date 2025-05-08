@@ -7,8 +7,16 @@ if (import.meta.main) {
     copy: ["./templates"],
     platform: "node",
     format: "esm",
-    external: ["@clack/prompts", "get-tsconfig", "pkg-types", "tiny-bin", "tsdown", "typescript", "unconfig"],
-    noExternal: [/^@kingsword\/nodekit\/.*/],
+    external: [
+      "@clack/prompts",
+      "get-tsconfig",
+      "pkg-types",
+      "tiny-bin",
+      "tsdown",
+      "typescript",
+      "unconfig",
+      /^@kingsword\/.*/,
+    ],
     packageJson: {
       name: "dwpkg",
       version: denoJson.version,
