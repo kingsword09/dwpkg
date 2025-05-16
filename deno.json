@@ -19,7 +19,7 @@
     "@kingsword/toolkit": "jsr:@kingsword/toolkit@^0.0.3",
     "pkg-types": "npm:pkg-types@^2.1.0",
     "tiny-bin": "npm:tiny-bin@^1.11.1",
-    "tsdown": "npm:tsdown@^0.11.0-beta.5",
+    "tsdown": "npm:tsdown@^0.11.9",
     "typescript": "npm:typescript@^5.8.3",
     "unconfig": "npm:unconfig@^7.3.2"
   }
